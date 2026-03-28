@@ -1,0 +1,5 @@
+langchain
+langchain-anthropic
+streamlit
+python-dotenv
+PyPDF2

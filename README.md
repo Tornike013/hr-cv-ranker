@@ -18,7 +18,7 @@ Each step is a separate focused AI call. The output of each step feeds automatic
 
 ## Live demo
 
-[your streamlit URL here]
+https://hr-cv-ranker-fhgffzen9oxqqoxjlml9tw.streamlit.app/
 
 ## Tech stack
 

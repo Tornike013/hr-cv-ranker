@@ -11,7 +11,8 @@ load_dotenv()
 llm = ChatAnthropic(
     model="claude-sonnet-4-20250514",
     anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),
-    max_tokens=1000
+    max_tokens=1000,
+    temperature=0
 )
 
 parser = StrOutputParser()
@@ -39,7 +40,7 @@ Missing: [1 sentence on what's missing or weak]"""
 # Step 2 - Score each candidate
 step2_prompt = PromptTemplate(
     input_variables=["candidate_summary", "job_description"],
-    template="""You are a senior HR manager. Score this candidate for the job.
+    template="""You are a strict HR evaluator. Score this candidate using this exact rubric:
 
 Job Description:
 {job_description}
@@ -47,9 +48,21 @@ Job Description:
 Candidate Summary:
 {candidate_summary}
 
+Scoring rubric:
+- Relevant experience (0-30 points): years and quality of directly relevant experience
+- Required skills match (0-30 points): how many required skills they have
+- Education fit (0-20 points): relevance of their degree/education
+- Seniority fit (0-20 points): are they the right level for this role
+
+Be strict. Penalize missing skills heavily. No two candidates should have the same total score unless they are genuinely identical profiles.
+
 Return ONLY:
-Score: X/100
-Reasoning: One sentence explaining the score."""
+Experience score: X/30
+Skills score: X/30
+Education score: X/20
+Seniority score: X/20
+Total: X/100
+Reasoning: One sentence explaining the total."""
 )
 
 # Step 3 - Rank and compare all candidates
